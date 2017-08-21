@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.mkeys.restaurantbsp.R;
+import com.mkeys.restaurantbsp.models.Food;
 import com.mkeys.restaurantbsp.presentation.AbstractActivity;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class RestaurantAdapter extends AbstractAdapter {
 
-    public ArrayList<String> channels;
+    public ArrayList<Food> channels;
     public AbstractActivity activity;
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
 
@@ -32,7 +33,7 @@ public class RestaurantAdapter extends AbstractAdapter {
         channels = new ArrayList<>();
     }
 
-    public void setData(ArrayList<String> data) {
+    public void setData(ArrayList<Food> data) {
         this.channels = data;
     }
 
@@ -41,7 +42,7 @@ public class RestaurantAdapter extends AbstractAdapter {
         notifyDataSetChanged();
     }
 
-    public ArrayList<String> getData() {
+    public ArrayList<Food> getData() {
         return channels;
     }
 
@@ -77,8 +78,9 @@ public class RestaurantAdapter extends AbstractAdapter {
     @Override
     protected void OnBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         ChannelsHolder view = (ChannelsHolder) holder;
-        String channelTitle = channels.get(position).toString();
-        view.tvTitle.setText(channelTitle);
+        Food restaurant = channels.get(position);
+        view.tvTitle.setText(restaurant.getName());
+        view.tvEmail.setText(restaurant.getAddedByUser());
         view.channel_layout.setOnClickListener(view1 -> {
             if (listener != null) {
                 listener.setChannelItemClickListener(position);
@@ -115,6 +117,9 @@ public class RestaurantAdapter extends AbstractAdapter {
 
         @BindView(R.id.tvTitle)
         AppCompatTextView tvTitle;
+
+        @BindView(R.id.tvEmail)
+        AppCompatTextView tvEmail;
 
         @BindView(R.id.swipe_layout)
         SwipeRevealLayout swipe_layout;

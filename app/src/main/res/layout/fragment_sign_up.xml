@@ -64,17 +64,9 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnLogin"
-                    android:text="@string/lb_login"
-                    style="@style/OrganeBtnTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btnSignUp"
                     android:text="@string/lb_signup"
-                    android:layout_marginTop="@dimen/small_margin"
-                    style="@style/GreenBtnTheme"
+                    style="@style/OrganeBtnTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

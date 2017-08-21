@@ -1,6 +1,7 @@
 package com.mkeys.restaurantbsp.presentation.login;
 
-import android.content.Intent;
+
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -8,19 +9,16 @@ import android.support.v7.widget.AppCompatEditText;
 import com.mkeys.restaurantbsp.R;
 import com.mkeys.restaurantbsp.models.BaseUser;
 import com.mkeys.restaurantbsp.presentation.AbstractFragment;
-import com.mkeys.restaurantbsp.presentation.restaurant.MenuRestaurantActivity;
-import com.mkeys.restaurantbsp.presenter.LoginPresenter;
-import com.mkeys.restaurantbsp.views.LoginView;
+import com.mkeys.restaurantbsp.presenter.SignUpPresenter;
+import com.mkeys.restaurantbsp.views.SignUpView;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.OnClick;
 
 /**
- * Created by hautran on 21/08/17.
+ * A simple {@link Fragment} subclass.
  */
-
-public class LoginFragment extends AbstractFragment implements LoginView {
+public class SignUpFragment extends AbstractFragment implements SignUpView {
 
     @BindView(R.id.edtEmail)
     AppCompatEditText edtEmail;
@@ -28,27 +26,16 @@ public class LoginFragment extends AbstractFragment implements LoginView {
     @BindView(R.id.edtPassword)
     AppCompatEditText edtPassword;
 
-    @BindView(R.id.btnLogin)
-    AppCompatButton btnLogin;
-
-    @OnClick(R.id.btnLogin)
-    public void onLogin() {
-        presenter.onLoginEvent();
-    }
-
     @BindView(R.id.btnSignUp)
     AppCompatButton btnSignUp;
 
     @OnClick(R.id.btnSignUp)
     public void onSignUp() {
-        toSignUp();
+        presenter.onRegister();
     }
 
-    private void toSignUp() {
-        addToBackStack(new SignUpFragment());
-    }
+    SignUpPresenter presenter;
 
-    private LoginPresenter presenter;
 
     @Override
     protected void initTittleBar() {
@@ -58,12 +45,12 @@ public class LoginFragment extends AbstractFragment implements LoginView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenter(mActivity, this);
+        presenter = new SignUpPresenter(mActivity, this);
     }
 
     @Override
     protected int getViewLayoutId() {
-        return R.layout.fragment_login;
+        return R.layout.fragment_sign_up;
     }
 
     @Override
@@ -72,7 +59,16 @@ public class LoginFragment extends AbstractFragment implements LoginView {
     }
 
     @Override
-    public void onLoginFailed(String mess) {
+    public void moveToNextScreen() {
+        this.clearBackStack();
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+    }
+
+    @Override
+    public void onRegisterFailed(String mess) {
         dialogHelper.alert(null, mess);
     }
 
@@ -94,9 +90,5 @@ public class LoginFragment extends AbstractFragment implements LoginView {
         dialogHelper.dismissProgress();
     }
 
-    @Override
-    public void moveToNextScreen() {
-        startActivity(new Intent(mActivity, MenuRestaurantActivity.class));
-        mActivity.finish();
-    }
+
 }

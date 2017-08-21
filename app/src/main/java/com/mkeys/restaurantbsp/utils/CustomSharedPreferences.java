@@ -3,6 +3,12 @@ package com.mkeys.restaurantbsp.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+
 
 public class CustomSharedPreferences {
 
@@ -11,6 +17,7 @@ public class CustomSharedPreferences {
     private static Context appContext;
 
     public static final String USER_TAG = "user_tag";
+    public final String ACCOUNT = "acc";
 
     /**
      * Constructor. Please create new object before using setter and getter
@@ -193,7 +200,7 @@ public class CustomSharedPreferences {
         }
     }
 
-//    public static void setUserLogin(cUserResponseModel userLogin) {
+//    public static void setUserLogin(FirebaseUser userLogin) {
 //        Gson gson = new Gson();
 //        String jsonCurProduct = gson.toJson(userLogin);
 //
@@ -204,13 +211,13 @@ public class CustomSharedPreferences {
 //        editor.commit();
 //    }
 //
-//    public static  cUserResponseModel getUserLogin(){
+//    public static  FirebaseUser getUserLogin(){
 //        Gson gson = new Gson();
-//        cUserResponseModel acc = new cUserResponseModel();
+//        FirebaseUser acc = new FirebaseUser();
 //        SharedPreferences sharedPref = appContext.getSharedPreferences(USER_TAG, Context.MODE_PRIVATE);
 //        String jsonPreferences = sharedPref.getString(ACCOUNT, "");
 //
-//        Type type = new TypeToken<cUserResponseModel>() {}.getType();
+//        Type type = new TypeToken<FirebaseUser>() {}.getType();
 //        acc = gson.fromJson(jsonPreferences, type);
 //
 //        return acc;
