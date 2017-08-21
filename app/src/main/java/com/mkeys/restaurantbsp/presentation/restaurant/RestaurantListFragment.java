@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,10 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mkeys.restaurantbsp.R;
 import com.mkeys.restaurantbsp.RestaurantApplication;
 import com.mkeys.restaurantbsp.adapter.DividerItemDecoration;
@@ -72,6 +77,9 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
         reRestaurant.addItemDecoration(new DividerItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
         adapter.setData(restaurants);
         reRestaurant.setAdapter(adapter);
+        restaurants.clear();
+        adapter.clearData();
+        presenter.getDataToDisplay();
     }
 
     private void fakeData() {
@@ -169,6 +177,19 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
             food.setAddedByUser(currentUser.getEmail());
         }
         return food;
+    }
+
+    @Override
+    public void showData(ArrayList<Food> foods) {
+        adapter.clearData();
+        adapter.setData(foods);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void clearFoodData() {
+        restaurants.clear();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
