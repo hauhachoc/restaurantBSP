@@ -7,7 +7,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mkeys.restaurantbsp.RestaurantApplication;
+import com.mkeys.restaurantbsp.FoodsApplication;
 import com.mkeys.restaurantbsp.models.BaseUser;
 import com.mkeys.restaurantbsp.presentation.AbstractActivity;
 import com.mkeys.restaurantbsp.views.SignUpView;
@@ -29,7 +29,7 @@ public class SignUpPresenter {
     public void onRegister(){
         view.showLoading();
         BaseUser baseUser = view.getData();
-        mAuth = RestaurantApplication.getFirebaseAuthInstance();
+        mAuth = FoodsApplication.getFirebaseAuthInstance();
         mAuth.createUserWithEmailAndPassword(baseUser.getEmail(), baseUser.getPassword())
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override

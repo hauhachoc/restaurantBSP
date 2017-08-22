@@ -1,4 +1,4 @@
-package com.mkeys.restaurantbsp.presentation.restaurant;
+package com.mkeys.restaurantbsp.presentation.foods;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -16,16 +16,14 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mkeys.restaurantbsp.R;
-import com.mkeys.restaurantbsp.RestaurantApplication;
+import com.mkeys.restaurantbsp.FoodsApplication;
 import com.mkeys.restaurantbsp.adapter.DividerItemDecoration;
 import com.mkeys.restaurantbsp.adapter.RestaurantAdapter;
+import com.mkeys.restaurantbsp.models.BaseUser;
 import com.mkeys.restaurantbsp.models.Food;
 import com.mkeys.restaurantbsp.presentation.AbstractFragment;
+import com.mkeys.restaurantbsp.presentation.foods.detail.DetaiFoodFragment;
 import com.mkeys.restaurantbsp.presenter.RestaurantListPresenter;
 import com.mkeys.restaurantbsp.views.RestaurantListView;
 
@@ -37,7 +35,7 @@ import butterknife.BindView;
  * Created by hautran on 21/08/17.
  */
 
-public class RestaurantListFragment extends AbstractFragment implements RestaurantListView {
+public class FoodsFragment extends AbstractFragment implements RestaurantListView , RestaurantAdapter.setChannelItemClick{
 
     @BindView(R.id.reRestaurant)
     RecyclerView reRestaurant;
@@ -48,6 +46,7 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private String newRes = "";
+    private ArrayList<BaseUser> users;
 
     @Override
     public void moveToNextScreen() {
@@ -56,10 +55,11 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
 
     @Override
     protected void initTittleBar() {
-        mActivity.setTitle("10");
+        mActivity.setTitle("0");
         ActionBar actionBar = mActivity.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
+
     }
 
     @Override
@@ -69,8 +69,9 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
 
     @Override
     protected void initViewFragment() {
-        fakeData();
+//        fakeData();
         adapter = new RestaurantAdapter(mActivity);
+        adapter.setChannelItemClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         reRestaurant.setLayoutManager(layoutManager);
         reRestaurant.setAdapter(adapter);
@@ -80,6 +81,7 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
         restaurants.clear();
         adapter.clearData();
         presenter.getDataToDisplay();
+        presenter.getUserToDisplay();
     }
 
     private void fakeData() {
@@ -95,7 +97,7 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = RestaurantApplication.getFirebaseAuthInstance();
+        mAuth = FoodsApplication.getFirebaseAuthInstance();
         presenter = new RestaurantListPresenter(mActivity, this);
     }
 
@@ -144,7 +146,7 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
     }
 
     private void addRestaurant() {
-        presenter.onAddRestaurant();
+        presenter.onAddFood();
     }
 
     @Override
@@ -171,7 +173,7 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
     @Override
     public Food getFoodData() {
         Food food = new Food();
-        food.setCompleted(true);
+        food.setCompleted(false);
         food.setName(newRes);
         if (currentUser != null) {
             food.setAddedByUser(currentUser.getEmail());
@@ -180,10 +182,44 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
     }
 
     @Override
+    public ArrayList<Food> getFoodsData() {
+        return adapter.getData();
+    }
+
+    @Override
     public void showData(ArrayList<Food> foods) {
         adapter.clearData();
         adapter.setData(foods);
         adapter.notifyDataSetChanged();
+        mActivity.setTitle(""+checkCheckedData(foods));
+    }
+
+    @Override
+    public void showUsersData(ArrayList<BaseUser> userss) {
+        users = userss;
+    }
+
+    @Override
+    public void showDataUpdated(ArrayList<Food> foods) {
+        adapter.clearData();
+        adapter.setData(foods);
+        adapter.notifyDataSetChanged();
+        mActivity.setTitle(""+checkCheckedData(foods));
+    }
+
+    private int checkCheckedData(ArrayList<Food> foods){
+        if (foods.size()>0){
+            int y = 0;
+            for (int i = 0 ; i < foods.size(); i++){
+                Food food = foods.get(i);
+                if (food.isCompleted()){
+                    y++;
+                }
+            }
+            return y;
+        }else {
+            return 0;
+        }
     }
 
     @Override
@@ -193,9 +229,34 @@ public class RestaurantListFragment extends AbstractFragment implements Restaura
     }
 
     @Override
+    public void onDeleteChannelSuccess(int pos) {
+        adapter.notifyItemRemoved(pos);
+        adapter.notifyDataSetChanged();
+        dialogHelper.alert("", "Deleted");
+    }
+
+    @Override
 
     public void onResume() {
         super.onResume();
         currentUser = mAuth.getCurrentUser();
+    }
+
+    @Override
+    public void setChannelItemClickListener(int pos) {
+        Bundle b = new Bundle();
+        b.putParcelableArrayList("bundle", users);
+        addToBackStack(new DetaiFoodFragment(), b);
+    }
+
+    @Override
+    public void setChannelDeleteClickListener(int position) {
+        presenter.onDeleteFood(position);
+    }
+
+    @Override
+    public void setIsChecked(Food food) {
+        Log.d(TAG, "updated:"+food.getName());
+        presenter.onUpdateFood(food);
     }
 }

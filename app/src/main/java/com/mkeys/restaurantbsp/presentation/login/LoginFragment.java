@@ -8,12 +8,11 @@ import android.support.v7.widget.AppCompatEditText;
 import com.mkeys.restaurantbsp.R;
 import com.mkeys.restaurantbsp.models.BaseUser;
 import com.mkeys.restaurantbsp.presentation.AbstractFragment;
-import com.mkeys.restaurantbsp.presentation.restaurant.MenuRestaurantActivity;
+import com.mkeys.restaurantbsp.presentation.foods.MenuFoodActivity;
 import com.mkeys.restaurantbsp.presenter.LoginPresenter;
 import com.mkeys.restaurantbsp.views.LoginView;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.OnClick;
 
 /**
@@ -34,6 +33,7 @@ public class LoginFragment extends AbstractFragment implements LoginView {
     @OnClick(R.id.btnLogin)
     public void onLogin() {
         presenter.onLoginEvent();
+
     }
 
     @BindView(R.id.btnSignUp)
@@ -96,7 +96,7 @@ public class LoginFragment extends AbstractFragment implements LoginView {
 
     @Override
     public void moveToNextScreen() {
-        startActivity(new Intent(mActivity, MenuRestaurantActivity.class));
+        startActivity(new Intent(mActivity, MenuFoodActivity.class));
         mActivity.finish();
     }
 }
