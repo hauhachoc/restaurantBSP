@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "746096306752",
+    "firebase_url": "https://restaurantbsp.firebaseio.com",
+    "project_id": "restaurantbsp",
+    "storage_bucket": "restaurantbsp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746096306752:android:526fb1546dfa42d4",
+        "android_client_info": {
+          "package_name": "com.mkeys.restaurantbsp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746096306752-j03b9gnfcp64cuorcju4oujv81hl5s7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mkeys.restaurantbsp",
+            "certificate_hash": "51b0cc31732d783f3c86a1dc57ebf72d57cb38af"
+          }
+        },
+        {
+          "client_id": "746096306752-qcg2tom480a1irl6d22dih0gqbrf8qci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtw8D0aXQJjVUNvbZ183QUtse2VznFH5g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746096306752-qcg2tom480a1irl6d22dih0gqbrf8qci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
